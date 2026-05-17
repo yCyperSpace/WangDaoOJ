@@ -73,6 +73,20 @@ bash /mnt/d/Projects/OnlineJudge/scripts/run_backend_wsl.sh
 ```
 
 当前默认配置位于 `backend/.env.example`，本地开发时可复制为 `backend/.env` 后按需调整。
+如果 Django 与 PostgreSQL 都运行在同一个 WSL 发行版中，建议在本地 `backend/.env` 中把 `POSTGRES_HOST` 设为空值，让 Django 通过 Unix socket 连接 PostgreSQL。
+
+启用 WSL mirrored networking 后，可用下面脚本处理 PostgreSQL 与服务启动：
+
+```bash
+bash /mnt/d/Projects/OnlineJudge/scripts/configure_postgres_socket_only.sh
+bash /mnt/d/Projects/OnlineJudge/scripts/configure_postgres_auth.sh
+bash /mnt/d/Projects/OnlineJudge/scripts/start_services_wsl.sh
+```
+
+启动完成后可访问：
+
+- 前端：`http://localhost:5173`
+- 后端：`http://localhost:8000`
 
 ## DeepSeek 配置
 
