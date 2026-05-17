@@ -1,5 +1,7 @@
 .env
 .venv/
+.venv-linux/
+.uv-cache/
 __pycache__/
 *.py[cod]
 db.sqlite3
@@ -9,4 +11,3 @@ node_modules/
 dist/
 .vite/
 .DS_Store
-

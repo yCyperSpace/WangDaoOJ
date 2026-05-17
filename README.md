@@ -57,6 +57,21 @@ npm run dev
 - C++ 编译器，默认读取 `CPP_COMPILER=g++`
 - 当前支持 `C++11 / C++14 / C++17`，默认使用 `C++14`
 
+## WSL 开发方式
+
+如果在 Windows 上使用 WSL2 开发，推荐把 PostgreSQL、`g++` 和 Django 后端都放在 Ubuntu 中运行：
+
+```bash
+# 仅首次配置
+bash /mnt/d/Projects/OnlineJudge/scripts/setup_wsl.sh
+bash /mnt/d/Projects/OnlineJudge/scripts/setup_backend_wsl.sh
+
+# 启动后端
+bash /mnt/d/Projects/OnlineJudge/scripts/run_backend_wsl.sh
+```
+
+当前默认配置位于 `backend/.env.example`，本地开发时可复制为 `backend/.env` 后按需调整。
+
 ## DeepSeek 配置
 
 在 `backend/.env` 中填写：
