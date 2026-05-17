@@ -1,7 +1,7 @@
 import Editor from "@monaco-editor/react";
 import type { editor as MonacoEditor, Range } from "monaco-editor";
 import { Code2, Play, Upload } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, PointerEvent as ReactPointerEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import { api } from "./api";
 import type { Problem, RunResult, Submission } from "./types";
@@ -26,6 +26,8 @@ export function App() {
   const [languageStandard, setLanguageStandard] = useState<"c++11" | "c++14" | "c++17">("c++14");
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [runResult, setRunResult] = useState<RunResult | null>(null);
+  const [activeCaseIndex, setActiveCaseIndex] = useState(0);
+  const [resultHeight, setResultHeight] = useState(260);
   const [busyAction, setBusyAction] = useState<"run" | "submit" | "upload" | null>(null);
   const [uploadOpen, setUploadOpen] = useState(false);
   const editorRef = useRef<MonacoEditor.IStandaloneCodeEditor | null>(null);
@@ -43,6 +45,8 @@ export function App() {
     () => problems.find((problem) => problem.id === selectedId) ?? null,
     [problems, selectedId],
   );
+
+  const activeCase = runResult?.cases[activeCaseIndex] ?? null;
 
   function updateCppDecorations() {
     const editor = editorRef.current;
@@ -68,6 +72,25 @@ export function App() {
     editor.onDidChangeModelContent(updateCppDecorations);
   }
 
+  function handleResizeStart(event: ReactPointerEvent<HTMLDivElement>) {
+    event.preventDefault();
+    const startY = event.clientY;
+    const startHeight = resultHeight;
+
+    function handlePointerMove(moveEvent: PointerEvent) {
+      const nextHeight = Math.min(520, Math.max(180, startHeight + startY - moveEvent.clientY));
+      setResultHeight(nextHeight);
+    }
+
+    function handlePointerUp() {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+    }
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+  }
+
   async function handleRun() {
     if (!selectedProblem) return;
     setBusyAction("run");
@@ -79,6 +102,7 @@ export function App() {
         language_standard: languageStandard,
       });
       setRunResult(data);
+      setActiveCaseIndex(0);
       setSubmission(null);
     } finally {
       setBusyAction(null);
@@ -194,7 +218,7 @@ export function App() {
             </div>
           </div>
           <Editor
-            height="calc(100vh - 260px)"
+            height={`calc(100vh - ${resultHeight + 112}px)`}
             defaultLanguage="cpp"
             theme="vs-dark"
             value={code}
@@ -202,41 +226,70 @@ export function App() {
             onChange={(value) => setCode(value ?? "")}
             options={{ minimap: { enabled: false }, fontSize: 14 }}
           />
-          <footer className="result-panel">
+          <div
+            className="result-resizer"
+            onPointerDown={handleResizeStart}
+            role="separator"
+            aria-orientation="horizontal"
+            aria-label="调整结果区高度"
+          />
+          <footer className="result-panel" style={{ height: resultHeight }}>
             {runResult ? (
               <>
                 <div className="result-heading">
-                  <strong>{runResult.status}</strong>
-                  <span>{runResult.detail}</span>
+                  <div>
+                    <strong className={`status ${runResult.status}`}>{runResult.status}</strong>
+                    <span>{runResult.detail}</span>
+                  </div>
+                  <div className="case-tabs">
+                    {runResult.cases.map((caseResult, index) => (
+                      <button
+                        className={index === activeCaseIndex ? "active" : ""}
+                        key={`${caseResult.status}-${index}`}
+                        onClick={() => setActiveCaseIndex(index)}
+                      >
+                        Case {index + 1}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="case-grid">
-                  {runResult.cases.map((caseResult, index) => (
-                    <article className="case-card" key={`${caseResult.status}-${index}`}>
-                      <header>
-                        <strong>样例 {index + 1}</strong>
-                        <span>{caseResult.status}</span>
-                      </header>
-                      <label>输入</label>
-                      <pre>{caseResult.input_data}</pre>
-                      <label>期望输出</label>
-                      <pre>{caseResult.expected_output}</pre>
-                      <label>实际输出</label>
-                      <pre>{caseResult.actual_output || "(无输出)"}</pre>
-                      {caseResult.diff && (
-                        <>
-                          <label>差异</label>
-                          <pre className="diff">{caseResult.diff}</pre>
-                        </>
-                      )}
-                      {caseResult.detail && <p>{caseResult.detail}</p>}
-                    </article>
-                  ))}
-                </div>
+                {activeCase && (
+                  <article className="case-console">
+                    <div className="console-summary">
+                      <strong className={`status ${activeCase.status}`}>{activeCase.status}</strong>
+                      <span>{activeCase.detail}</span>
+                    </div>
+                    <div className="io-grid">
+                      <section>
+                        <label>输入</label>
+                        <pre>{activeCase.input_data}</pre>
+                      </section>
+                      <section>
+                        <label>期望输出</label>
+                        <pre>{activeCase.expected_output}</pre>
+                      </section>
+                      <section>
+                        <label>实际输出</label>
+                        <pre>{activeCase.actual_output || "(无输出)"}</pre>
+                      </section>
+                    </div>
+                    {activeCase.diff && (
+                      <section className="diff-block">
+                        <label>差异</label>
+                        <pre>{activeCase.diff}</pre>
+                      </section>
+                    )}
+                  </article>
+                )}
               </>
             ) : (
               <div className="result-heading">
-                <strong>{submission?.status ?? "尚未运行"}</strong>
-                <span>{submission?.detail ?? "运行样例可查看期望输出、实际输出和差异"}</span>
+                <div>
+                  <strong className={`status ${submission?.status ?? ""}`}>
+                    {submission?.status ?? "尚未运行"}
+                  </strong>
+                  <span>{submission?.detail ?? "运行样例可查看期望输出、实际输出和差异"}</span>
+                </div>
               </div>
             )}
           </footer>
