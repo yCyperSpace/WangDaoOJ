@@ -14,7 +14,7 @@ flowchart LR
     FE["React 前端"] --> API["Django REST API"]
     API --> DB["PostgreSQL"]
     API --> JUDGE["CppJudgeService"]
-    API --> AI["ReferenceSolutionGenerator"]
+    API --> AI["ProblemPackageGenerator"]
     AI --> DS["DeepSeek API"]
 ```
 
@@ -26,7 +26,7 @@ flowchart LR
 - `SampleCase`
 - `TestCase`
 - `ProblemViewSet`
-- `ReferenceSolutionGenerator`
+- `DeepSeekProblemPackageGenerator`
 
 ### 2.2 `submissions`
 
@@ -34,6 +34,7 @@ flowchart LR
 - `SubmissionViewSet`
 - `CppJudgeService`
 - `language_standard` 字段用于选择 `C++11 / C++14 / C++17`
+- `run` 动作用于运行公开样例并返回逐样例差异
 
 ## 3. 关键接口
 
@@ -44,6 +45,14 @@ flowchart LR
 ### 3.2 上传题目
 
 `POST /api/problems/upload/`
+
+请求示例：
+
+```json
+{
+  "statement": "输入两个整数 a 和 b，输出它们的和。"
+}
+```
 
 ### 3.3 提交代码
 
@@ -60,17 +69,30 @@ flowchart LR
 }
 ```
 
+### 3.4 运行公开样例
+
+`POST /api/submissions/run/`
+
+返回内容包括：
+
+- 总体状态
+- 每个样例的输入
+- 期望输出
+- 实际输出
+- 错误说明
+- `unified diff`
+
 ## 4. 扩展设计
 
 - 新语言支持：新增语言策略服务，不改动提交 API
-- 新 AI 提供方：实现 `ReferenceSolutionGenerator` 协议即可
+- 新 AI 提供方：实现 `ProblemPackageGenerator` 协议即可
 - 新判题方式：替换 `CppJudgeService` 或抽象出统一 Judge 接口
 
 ## 5. 当前限制
 
 - 当前判题为同步执行
 - 当前判题进程未做容器隔离
-- 当前仅支持样例自动生成公开测试点
+- 上传题目依赖 DeepSeek 生成题包
 - 当前未实现用户登录和权限系统
 - 当前运行环境需要提供可用的 C++ 编译器路径，默认值为 `g++`
 

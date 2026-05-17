@@ -5,8 +5,10 @@
 ## 功能
 
 - 在线编写 C++ 代码，编辑器支持语法高亮
+- 编辑器额外高亮 `cin / cout / cerr / clog / endl`
 - 提交后自动编译、运行并返回判题结果
-- 上传题目、样例，并预留 DeepSeek 自动生成标准程序接口
+- 支持先运行公开样例，查看期望输出、实际输出和差异
+- 只上传原始题面，由 DeepSeek 自动生成题目结构、公开样例、隐藏测试点和参考解
 - Django REST 后端、React + TypeScript 前端、PostgreSQL 数据库
 
 ## 技术栈
@@ -82,7 +84,7 @@ DEEPSEEK_BASE_URL=https://api.deepseek.com
 DEEPSEEK_MODEL=deepseek-chat
 ```
 
-未配置密钥时，上传题目仍可正常创建，只是不会自动生成标准程序。
+上传题目接口依赖 DeepSeek，未配置密钥时会返回错误。
 
 ## 文档
 

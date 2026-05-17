@@ -20,3 +20,18 @@ export type Submission = {
   status: string;
   detail: string;
 };
+
+export type RunCaseResult = {
+  status: string;
+  input_data: string;
+  expected_output: string;
+  actual_output: string;
+  detail: string;
+  diff: string;
+};
+
+export type RunResult = {
+  status: string;
+  detail: string;
+  cases: RunCaseResult[];
+};
