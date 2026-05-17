@@ -17,7 +17,14 @@ class CppJudgeService:
             source.write_text(submission.source_code, encoding="utf-8")
 
             compile_result = subprocess.run(
-                [settings.CPP_COMPILER, "-std=c++17", "-O2", str(source), "-o", str(binary)],
+                [
+                    settings.CPP_COMPILER,
+                    f"-std={submission.language_standard}",
+                    "-O2",
+                    str(source),
+                    "-o",
+                    str(binary),
+                ],
                 capture_output=True,
                 text=True,
                 timeout=15,

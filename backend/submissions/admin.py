@@ -5,6 +5,5 @@ from .models import Submission
 
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
-    list_display = ["id", "problem", "language", "status", "created_at"]
-    list_filter = ["status", "language"]
-
+    list_display = ["id", "problem", "language", "language_standard", "status", "created_at"]
+    list_filter = ["status", "language", "language_standard"]

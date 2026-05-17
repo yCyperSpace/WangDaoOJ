@@ -20,6 +20,7 @@ export function App() {
   const [problems, setProblems] = useState<Problem[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [code, setCode] = useState(starterCode);
+  const [languageStandard, setLanguageStandard] = useState<"c++11" | "c++14" | "c++17">("c++14");
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [uploadOpen, setUploadOpen] = useState(false);
 
@@ -41,6 +42,7 @@ export function App() {
       problem: selectedProblem.id,
       source_code: code,
       language: "cpp",
+      language_standard: languageStandard,
     });
     setSubmission(data);
   }
@@ -118,7 +120,17 @@ export function App() {
 
         <section className="editor-pane">
           <div className="editor-toolbar">
-            <span>C++17</span>
+            <select
+              aria-label="C++ 标准"
+              value={languageStandard}
+              onChange={(event) =>
+                setLanguageStandard(event.target.value as "c++11" | "c++14" | "c++17")
+              }
+            >
+              <option value="c++11">C++11</option>
+              <option value="c++14">C++14</option>
+              <option value="c++17">C++17</option>
+            </select>
             <button onClick={handleSubmit}>
               <Play size={16} />
               提交
@@ -161,4 +173,3 @@ export function App() {
     </main>
   );
 }
-

@@ -33,6 +33,7 @@ flowchart LR
 - `Submission`
 - `SubmissionViewSet`
 - `CppJudgeService`
+- `language_standard` 字段用于选择 `C++11 / C++14 / C++17`
 
 ## 3. 关键接口
 
@@ -54,7 +55,8 @@ flowchart LR
 {
   "problem": 1,
   "source_code": "#include <bits/stdc++.h>...",
-  "language": "cpp"
+  "language": "cpp",
+  "language_standard": "c++14"
 }
 ```
 

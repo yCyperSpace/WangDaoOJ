@@ -139,6 +139,14 @@ button {
   border-bottom: 1px solid #374151;
 }
 
+.editor-toolbar select {
+  padding: 7px 10px;
+  border: 1px solid #4b5563;
+  border-radius: 6px;
+  color: #e5e7eb;
+  background: #1f2937;
+}
+
 .editor-toolbar button,
 .actions button {
   padding: 8px 12px;
@@ -211,4 +219,3 @@ button {
     min-width: 180px;
   }
 }
-

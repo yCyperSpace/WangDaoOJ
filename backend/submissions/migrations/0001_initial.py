@@ -18,6 +18,14 @@ class Migration(migrations.Migration):
                 ("source_code", models.TextField()),
                 ("language", models.CharField(default="cpp", max_length=20)),
                 (
+                    "language_standard",
+                    models.CharField(
+                        choices=[("c++11", "C++11"), ("c++14", "C++14"), ("c++17", "C++17")],
+                        default="c++14",
+                        max_length=10,
+                    ),
+                ),
+                (
                     "status",
                     models.CharField(
                         choices=[
@@ -46,4 +54,3 @@ class Migration(migrations.Migration):
             options={"ordering": ["-created_at"]},
         ),
     ]
-

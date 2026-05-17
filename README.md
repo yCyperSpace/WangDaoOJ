@@ -4,7 +4,7 @@
 
 ## 功能
 
-- 在线编写 C++17 代码，编辑器支持语法高亮
+- 在线编写 C++ 代码，编辑器支持语法高亮
 - 提交后自动编译、运行并返回判题结果
 - 上传题目、样例，并预留 DeepSeek 自动生成标准程序接口
 - Django REST 后端、React + TypeScript 前端、PostgreSQL 数据库
@@ -55,6 +55,7 @@ npm run dev
 - Node.js 20+
 - PostgreSQL 16+
 - C++ 编译器，默认读取 `CPP_COMPILER=g++`
+- 当前支持 `C++11 / C++14 / C++17`，默认使用 `C++14`
 
 ## DeepSeek 配置
 

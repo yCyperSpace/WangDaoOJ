@@ -6,7 +6,7 @@ from .models import Submission
 class SubmissionCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
-        fields = ["id", "problem", "source_code", "language"]
+        fields = ["id", "problem", "source_code", "language", "language_standard"]
 
     def validate_language(self, value):
         if value != "cpp":
@@ -17,5 +17,13 @@ class SubmissionCreateSerializer(serializers.ModelSerializer):
 class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
-        fields = ["id", "problem", "source_code", "language", "status", "detail", "created_at"]
-
+        fields = [
+            "id",
+            "problem",
+            "source_code",
+            "language",
+            "language_standard",
+            "status",
+            "detail",
+            "created_at",
+        ]

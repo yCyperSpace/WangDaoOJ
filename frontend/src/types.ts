@@ -16,7 +16,7 @@ export type Problem = {
 
 export type Submission = {
   id: number;
+  language_standard: "c++11" | "c++14" | "c++17";
   status: string;
   detail: string;
 };
-
