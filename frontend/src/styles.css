@@ -1,0 +1,214 @@
+:root {
+  color: #1f2937;
+  background: #f6f7fb;
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+.shell {
+  min-height: 100vh;
+}
+
+.topbar {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.brand,
+.editor-toolbar,
+.editor-toolbar button,
+.ghost {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand {
+  font-weight: 600;
+}
+
+.ghost {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 220px minmax(320px, 1fr) minmax(420px, 1.2fr);
+  min-height: calc(100vh - 56px);
+}
+
+.problem-list {
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 12px;
+}
+
+.problem-list button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  background: transparent;
+  text-align: left;
+}
+
+.problem-list button.active {
+  background: #e0e7ff;
+}
+
+.problem-list strong,
+.problem-list span {
+  display: block;
+}
+
+.problem-list span {
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.problem-pane {
+  padding: 24px;
+  overflow: auto;
+}
+
+.problem-pane h1 {
+  margin-top: 0;
+}
+
+.problem-pane h2 {
+  font-size: 16px;
+  margin-top: 24px;
+}
+
+.sample {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.sample label {
+  display: block;
+  margin-bottom: 6px;
+  color: #6b7280;
+}
+
+.sample pre {
+  margin: 0 0 12px;
+  white-space: pre-wrap;
+}
+
+.editor-pane {
+  background: #111827;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-toolbar {
+  height: 48px;
+  justify-content: space-between;
+  padding: 0 16px;
+  color: #e5e7eb;
+  border-bottom: 1px solid #374151;
+}
+
+.editor-toolbar button,
+.actions button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.result-bar {
+  min-height: 64px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #e5e7eb;
+  border-top: 1px solid #374151;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.modal {
+  width: min(560px, calc(100vw - 32px));
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.modal h2 {
+  margin: 0 0 8px;
+}
+
+.modal input,
+.modal textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.modal textarea {
+  min-height: 76px;
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 1100px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .problem-list {
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .problem-list button {
+    min-width: 180px;
+  }
+}
+

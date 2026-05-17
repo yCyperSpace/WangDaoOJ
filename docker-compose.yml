@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: online-judge-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: online_judge
+      POSTGRES_USER: online_judge
+      POSTGRES_PASSWORD: online_judge
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
